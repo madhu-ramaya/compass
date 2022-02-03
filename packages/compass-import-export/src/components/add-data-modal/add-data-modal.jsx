@@ -31,7 +31,8 @@ import {
   closeAddData,
   toggleIncludeField,
   setFieldType,
-  setAddDataRecordsCount
+  setAddDataRecordsCount,
+  setFieldsPerRecordCount
 } from '../../modules/add-data';
 import styles from './add-data-modal.module.less';
 import createStyler from '../../utils/styler.js';
@@ -166,6 +167,8 @@ class AddDataModal extends PureComponent {
     previewLoaded: PropTypes.bool,
     addDataRecordsCount: PropTypes.number,
     setAddDataRecordsCount: PropTypes.func.isRequired,
+    fieldsPerRecordCount: PropTypes.object,
+    setFieldsPerRecordCount: PropTypes.func.isRequired,
   };
 
 
@@ -247,7 +250,7 @@ class AddDataModal extends PureComponent {
         dataTestId="add-data-button"
         className="btn btn-primary btn-sm"
         text={this.props.status === STARTED ? 'Adding...' : 'Add Data'}
-        disabled={!this.props.addDataRecordsCount || this.props.status === STARTED}
+        disabled={(!this.props.addDataRecordsCount) || this.props.status === STARTED}
         clickHandler={this.handleAddDataBtnClicked}
       />
     );
@@ -313,6 +316,7 @@ class AddDataModal extends PureComponent {
             setIgnoreBlanks={this.props.setIgnoreBlanks}
             fileOpenDialog={fileOpenDialog}
             setAddDataRecordsCount={this.props.setAddDataRecordsCount}
+            setFieldsPerRecordCount={this.props.setFieldsPerRecordCount}
           />
           {this.renderImportPreview()}
           <ProgressBar
@@ -378,6 +382,7 @@ const mapStateToProps = (state) => ({
   values: state.addData.values,
   previewLoaded: state.addData.previewLoaded,
   addDataRecordsCount: state.addData.addDataRecordsCount,
+  fieldsPerRecordCount: state.addData.fieldsPerRecordCount,
 });
 
 /**
@@ -396,6 +401,7 @@ export default connect(
     closeAddData,
     toggleIncludeField,
     setFieldType,
-    setAddDataRecordsCount
+    setAddDataRecordsCount,
+    setFieldsPerRecordCount
   }
 )(AddDataModal);

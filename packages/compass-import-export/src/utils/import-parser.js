@@ -166,14 +166,4 @@ function createParser({
   });
 }
 
-// export const createEJSONDeserializer = function() {
-//   return new Transform({
-//     objectMode: true,
-
-//   const doc = EJSON.deserialize(d, {
-//     promoteValues: true,
-//     bsonRegExp: true
-//   });
-// };
-
 export default createParser;

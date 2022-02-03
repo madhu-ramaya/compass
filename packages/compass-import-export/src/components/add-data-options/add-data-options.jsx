@@ -8,6 +8,13 @@ import createStyler from '../../utils/styler.js';
 const style = createStyler(styles, 'add-data-options');
 
 class AddDataOptions extends PureComponent {
+  constructor() {
+    super();
+    this.state = {
+      fieldsPerRecordCount: {}
+    };
+  }
+
   static propTypes = {
     delimiter: PropTypes.string,
     setDelimiter: PropTypes.func.isRequired,
@@ -22,6 +29,8 @@ class AddDataOptions extends PureComponent {
     fileOpenDialog: PropTypes.func,
     addDataRecordsCount: PropTypes.number,
     setAddDataRecordsCount: PropTypes.func.isRequired,
+    fieldsPerRecordCount: PropTypes.object,
+    setFieldsPerRecordCount: PropTypes.func.isRequired,
   };
 
   /**
@@ -36,8 +45,14 @@ class AddDataOptions extends PureComponent {
     evt.stopPropagation();
   };
 
-  onCountChange(evt) {
+  onDataCountChange(evt) {
     this.props.setAddDataRecordsCount(parseInt(evt.currentTarget.value, 10));
+  }
+
+  onFieldsCountChange(evt) {
+    const fieldsObj = this.state ? this.state.fieldsPerRecordCount : {}
+    fieldsObj[evt.currentTarget.id]=parseInt(evt.currentTarget.value, 10)
+    this.props.setFieldsPerRecordCount(fieldsObj);
   }
 
   render() {
@@ -60,8 +75,44 @@ class AddDataOptions extends PureComponent {
               className={style('input')}
               placeholder="No of documents to be inserted"
               value={this.props.addDataRecordsCount}
-              onChange={this.onCountChange.bind(this)} />
+              onChange={this.onDataCountChange.bind(this)} />
         </fieldset>
+        <legend className={style('legend')}>Options</legend>
+           <input
+              type="number"
+              min="0"
+              id="string"
+              className={style('input')}
+              placeholder="Strings per document, default 1"
+              value={this.props.fieldsPerRecordCount?.string}
+              onChange={this.onFieldsCountChange.bind(this)} />
+              &nbsp;&nbsp;
+           <input
+              type="number"
+              min="0"
+              id="number"
+              className={style('input')}
+              placeholder="Numbers per document, default 1"
+              value={this.props.fieldsPerRecordCount?.number}
+              onChange={this.onFieldsCountChange.bind(this)} />
+              &nbsp;&nbsp;
+           <input
+              type="number"
+              min="0"
+              id="array"
+              className={style('input')}
+              placeholder="Arrays per document, default 1"
+              value={this.props.fieldsPerRecordCount?.array}
+              onChange={this.onFieldsCountChange.bind(this)} />
+              &nbsp;&nbsp;
+           <input
+              type="number"
+              min="0"
+              id="document"
+              className={style('input')}
+              placeholder="Objects per document, default 1"
+              value={this.props.fieldsPerRecordCount?.object}
+              onChange={this.onFieldsCountChange.bind(this)} />
         <fieldset>
           <legend className={style('legend')}>Options</legend>
           <div className={style('option')}>

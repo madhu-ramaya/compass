@@ -156,3 +156,25 @@ export const AtlasLink = {
     ])
   ]
 };
+
+/**
+ * Еhe "New to Compass and don't have a cluster?" green box on
+ * the righthand side of the connect screen
+ */
+ export const AtlasLink1 = {
+  title: 'Not sure which cluster to use?',
+  body: [
+    createParagraph([
+      'If your not sure which cluster to use, you can use teh mongodb sizing tool to decide on one',
+      '.'
+    ]),
+    createParagraph([
+      createButton(
+        'https://tools.peerislands.io/',
+        'MongoDB Tools',
+        'create-atlas-cluster-clicked',
+        () => track('Atlas Link Clicked', { screen: 'connect' })
+      )
+    ])
+  ]
+};

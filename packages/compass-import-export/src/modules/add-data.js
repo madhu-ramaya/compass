@@ -37,6 +37,7 @@ export const SET_IGNORE_BLANKS = `${PREFIX}/SET_IGNORE_BLANKS`;
 export const TOGGLE_INCLUDE_FIELD = `${PREFIX}/TOGGLE_INCLUDE_FIELD`;
 export const SET_FIELD_TYPE = `${PREFIX}/SET_FIELD_TYPE`;
 export const SET_ADD_DATA_COUNT = `${PREFIX}/SET_ADD_DATA_COUNT`;
+export const SET_ADD_FIELD_COUNT = `${PREFIX}/SET_ADD_FIELD_COUNT`;
 
 /**
  * ## Initial state.
@@ -142,6 +143,36 @@ export const setAddDataRecordsCount = addDataRecordsCount => {
   };
 };
 
+export const setFieldsPerRecordCount = fieldsPerRecordCount => {
+  return {
+    type: SET_ADD_FIELD_COUNT,
+    fieldsPerRecordCount: fieldsPerRecordCount,
+  };
+};
+
+
+function getSampleJson(index, fieldsCount) {
+  const stringCount = fieldsCount && fieldsCount['string']? fieldsCount['string']: 1
+  const numberCount = fieldsCount && fieldsCount['number']? fieldsCount['number']: 1
+  const arrayCount = fieldsCount && fieldsCount['array']? fieldsCount['array']: 1
+  const objCount = fieldsCount && fieldsCount['document']? fieldsCount['document']: 1
+  let response = {'id': index}
+
+  for(let i=0; i< stringCount; i++){
+    response["string"+i] = Math.random().toString()
+  }
+  for(let i=0; i< numberCount; i++){
+    response["number"+i] = Math.random()
+  }
+  for(let i=0; i< arrayCount; i++){
+    response["array"+i] = [Math.random()]
+  }
+  for(let i=0; i< objCount; i++){
+    response["object"+i] = { 'item': Math.random() }
+  }
+  return response
+}
+
 /**
  * Sets up a streaming based pipeline to execute the import
  * and update status/progress.
@@ -151,19 +182,18 @@ export const setAddDataRecordsCount = addDataRecordsCount => {
  */
 export const startAddData = () => {
   return (dispatch, getState) => {
-    console.log('startAddData')
     const state = getState();
     const {
       ns,
       dataService: { dataService },
       addData,
-      view
     } = state;
     const {
       fileType,
       delimiter,
       stopOnErrors,
-      addDataRecordsCount
+      addDataRecordsCount,
+      fieldsPerRecordCount
     } = addData;
 
     const progress = createProgressStream(addDataRecordsCount, function(err, info) {
@@ -176,12 +206,11 @@ export const startAddData = () => {
     dispatch(onGuesstimatedDocsTotal(addDataRecordsCount));
 
     const batchCount = ~~(addDataRecordsCount / 50)
-    console.log('batchCount', batchCount)
     let temp = 0
 
     for (let batch = 0; batch <= batchCount; batch++) {
       for (let i = temp; i < 50 * (batch + 1); i++) {
-        const sampleJson = { "item": i }
+        const sampleJson = getSampleJson(i, fieldsPerRecordCount)
         const docs = [sampleJson];
 
         console.time('addData');
@@ -523,7 +552,6 @@ export const setIgnoreBlanks = ignoreBlanks => ({
  * @api public
  */
 export const openAddData = () => {
-  console.log('import-export add-data openAddData')
   track('Add Data Opened');
   return {
     type: OPEN,
@@ -601,13 +629,18 @@ const reducer = (state = INITIAL_STATE, action) => {
   }
 
   if (action.type === SET_ADD_DATA_COUNT) {
-    console.log('SET_ADD_DATA_COUNT')
     return {
       ...state,
       addDataRecordsCount: action.addDataRecordsCount
     };
   }
 
+  if (action.type === SET_ADD_FIELD_COUNT) {
+    return {
+      ...state,
+      fieldsPerRecordCount: action.fieldsPerRecordCount
+    };
+  }
 
   /**
    * ## Preview and projection/data type options

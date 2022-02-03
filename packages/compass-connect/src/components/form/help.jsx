@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
-import { HelpItems, AtlasLink } from '../../helpers/help-items';
+import { HelpItems, AtlasLink, AtlasLink1 } from '../../helpers/help-items';
 
 import styles from '../connect.module.less';
 
@@ -38,6 +38,16 @@ class Help extends React.Component {
                   {AtlasLink.title}
                 </p>
                 {AtlasLink.body}
+              </div>
+            </div>
+          </div>
+          <div className={classnames(styles['atlas-link-container'])}>
+            <div className={classnames(styles['atlas-link'])}>
+              <div className={classnames(styles['help-content'])}>
+                <p className={classnames(styles['help-item-question'])}>
+                  {AtlasLink1.title}
+                </p>
+                {AtlasLink1.body}
               </div>
             </div>
           </div>
