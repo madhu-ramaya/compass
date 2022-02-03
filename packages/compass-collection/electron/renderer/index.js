@@ -21,6 +21,7 @@ import { activate as activateQueryHistory } from '@mongodb-js/compass-query-hist
 import { activate as activateValidation } from '@mongodb-js/compass-schema-validation';
 import { activate as activateSchema } from '@mongodb-js/compass-schema';
 import { activate as activateFields } from '@mongodb-js/compass-field-store';
+import { activate as activateAddData } from '@mongodb-js/compass-add-data';
 
 const appRegistry = new AppRegistry();
 
@@ -49,6 +50,7 @@ activateIndexes(appRegistry);
 activateSchema(appRegistry);
 activateValidation(appRegistry);
 activateFields(appRegistry);
+activateAddData(appRegistry);
 appRegistry.onActivated();
 
 // Since we are using HtmlWebpackPlugin WITHOUT a template,

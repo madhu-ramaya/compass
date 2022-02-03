@@ -21,6 +21,9 @@ import configureExportStore, {
 import configureImportStore, {
   setDataProvider as setImportDataProvider
 } from '../../src/stores/import-store';
+import configureAddDataStore, {
+  setDataProvider as setAddDataProvider
+} from '../../src/stores/add-data-store';
 import { activate as activateStats } from '@mongodb-js/compass-collection-stats';
 
 /**
@@ -92,6 +95,13 @@ const importStore = configureImportStore({
   namespace: NS,
   localAppRegistry: localAppRegistry
 });
+const addDataStore = configureAddDataStore({
+  namespace: NS,
+  localAppRegistry: localAppRegistry
+});
+
+
+
 
 // Create a HMR enabled render function
 const render = (Component) => {
@@ -123,6 +133,7 @@ const dataService = new DataService(connection);
 dataService.connect((error, ds) => {
   setImportDataProvider(importStore, error, ds);
   setExportDataProvider(exportStore, error, ds);
+  setAddDataProvider(addDataStore, error, ds);
   onDataServiceConnected(localAppRegistry);
 });
 

@@ -657,6 +657,12 @@ const configureStore = (options = {}) => {
       });
     },
 
+    closeAddDataDocumentDialog() {
+      this.setState({
+        insert: this.getInitialInsertState()
+      });
+    },
+
     /**
      * Open the insert document dialog.
      *
@@ -664,6 +670,7 @@ const configureStore = (options = {}) => {
      * @param {Boolean} clone - Whether this is a clone operation.
      */
     openInsertDocumentDialog(doc, clone) {
+      console.log('crud-store.js openInsertDocumentDialog')
       const hadronDoc = new HadronDocument(doc, false);
 
       if (clone) {
@@ -691,6 +698,11 @@ const configureStore = (options = {}) => {
           isCommentNeeded: true
         }
       });
+    },
+
+    openAddDataDialog() {
+      console.log('openAddDataDialog')
+      this.localAppRegistry.emit('open-add-data');
     },
 
     /**

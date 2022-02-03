@@ -372,6 +372,12 @@ function collectionSubMenu(isReadOnly: boolean): MenuItemConstructorOptions {
       ipcMain.broadcastFocused('compass:open-export');
     },
   });
+  subMenu.push({
+    label: '&Add data',
+    click() {
+      ipcMain.broadcastFocused('compass:open-add-data');
+    },
+  });
   return {
     label: '&Collection',
     submenu: subMenu,

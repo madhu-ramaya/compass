@@ -49,9 +49,6 @@
     "type": "git",
     "url": "git://github.com/mongodb-js/compass.git"
   },
-  "//": "TODO: We keep webpack-cli/serve and testing-library/dom at the root to ",
-  "//": "      work around weird npm workspace hoising issues caused by outdated",
-  "//": "      transient dependencies. This can go away when we update webpack  ",
   "//": "      and leafygreen to the same version everywhere",
   "devDependencies": {
     "@testing-library/dom": "^8.11.1",

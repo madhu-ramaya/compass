@@ -329,6 +329,15 @@ const RULES = [
     })
   },
   {
+    registryEvent: 'open-add-data',
+    resource: 'AddData',
+    action: 'opened',
+    condition: () => true,
+    metadata: (version) => ({
+      compass_version: version
+    })
+  },
+  {
     registryEvent: 'import-finished',
     resource: 'Import',
     action: 'completed',

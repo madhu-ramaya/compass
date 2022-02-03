@@ -5,6 +5,7 @@ import { ns, dataService, appRegistry, globalAppRegistry } from './compass';
 import stats from './stats';
 import exportData from './export';
 import importData from './import';
+import addData from './add-data';
 
 const rootReducer = combineReducers({
   appRegistry,
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   ns,
   stats,
   exportData,
-  importData
+  importData,
+  addData,
 });
 
 export default rootReducer;

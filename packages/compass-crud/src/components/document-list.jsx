@@ -61,6 +61,8 @@ class DocumentList extends React.Component {
       this.props.openInsertDocumentDialog({ _id: new ObjectId(), '': '' }, false);
     } else if (key === 'import-file') {
       this.props.openImportFileDialog();
+    }else if (key === 'insert-multi-document') {
+      this.props.openAddDataDialog();
     }
   }
 
@@ -269,6 +271,7 @@ DocumentList.propTypes = {
   store: PropTypes.object.isRequired,
   openInsertDocumentDialog: PropTypes.func,
   openImportFileDialog: PropTypes.func,
+  openAddDataDialog: PropTypes.func,
   openExportFileDialog: PropTypes.func,
   removeDocument: PropTypes.func,
   replaceDocument: PropTypes.func,

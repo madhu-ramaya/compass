@@ -41,9 +41,15 @@ class ImportExport extends Component {
           clickHandler={this.handleExportModalOpen}
           text="Export"
         />
+        <TextButton
+          className="btn btn-default btn-sm"
+          clickHandler={this.handleAddDataModalOpen}
+          text="Add Data"
+        />
         <Plugin
           exportStore={this.props.exportStore}
           importStore={this.props.importStore}
+          addDataStore={this.props.addDataStore}
         />
       </div>
     );

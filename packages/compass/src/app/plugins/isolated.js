@@ -27,4 +27,5 @@ module.exports = [
   require('@mongodb-js/compass-indexes'),
   require('@mongodb-js/compass-explain-plan'),
   require('@mongodb-js/compass-saved-aggregations-queries'),
+  require('@mongodb-js/compass-add-data'),
 ];

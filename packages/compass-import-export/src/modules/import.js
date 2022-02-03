@@ -335,7 +335,6 @@ export const startImport = () => {
         dispatch(appRegistryEmit('import-finished', payload));
         dispatch(globalAppRegistryEmit('import-finished', payload));
         console.groupEnd();
-        console.groupEnd();
       }
     );
   };
