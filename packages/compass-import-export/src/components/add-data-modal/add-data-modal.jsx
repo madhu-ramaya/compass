@@ -17,7 +17,6 @@ import {
 import ProgressBar from '../progress-bar';
 import ErrorBox from '../error-box';
 import ImportPreview from '../import-preview';
-import AddDataOptions from '../add-data-options';
 import FILE_TYPES from '../../constants/file-types';
 import formatNumber from '../../utils/format-number.js';
 import {
@@ -34,9 +33,11 @@ import {
   setAddDataRecordsCount,
   setFieldsPerRecordCount
 } from '../../modules/add-data';
+import { startImport} from '../../modules/import';
 import styles from './add-data-modal.module.less';
 import createStyler from '../../utils/styler.js';
 import classnames from 'classnames';
+import UploadModal from '../upload-modal';
 
 const style = createStyler(styles, 'add-data-modal');
 
@@ -124,6 +125,7 @@ class AddDataModal extends PureComponent {
   static propTypes = {
     open: PropTypes.bool,
     ns: PropTypes.string.isRequired,
+    startImport: PropTypes.func.isRequired,
     startAddData: PropTypes.func.isRequired,
     cancelAddData: PropTypes.func.isRequired,
     closeAddData: PropTypes.func.isRequired,
@@ -191,12 +193,12 @@ class AddDataModal extends PureComponent {
     this.props.closeAddData();
   };
 
-    /**
-   * Handle clicking the import button.
-   */
-     handleAddDataBtnClicked = () => {
-      this.props.startAddData();
-    };
+  /**
+ * Handle clicking the import button.
+ */
+  handleAddDataBtnClicked = () => {
+    this.props.startAddData();
+  };
 
   // TODO: lucas: Make COMPLETED, FINISHED_STATUSES
   // have better names.
@@ -213,9 +215,6 @@ class AddDataModal extends PureComponent {
   }
 
   renderDoneButton() {
-    if (!this.wasImportSuccessful()) {
-      return null;
-    }
     return (
       <TextButton
         dataTestId="done-button"
@@ -239,6 +238,30 @@ class AddDataModal extends PureComponent {
         />
       );
     }
+  }
+
+    /**
+   * Handle clicking the import button.
+   */
+     handleImportBtnClicked = () => {
+       console.log(this.props);
+      this.props.startAddData();
+    };
+
+
+  renderImportButton() {
+    if (this.wasImportSuccessful()) {
+      return null;
+    }
+    return (
+      <TextButton
+        dataTestId="import-button"
+        className="btn btn-primary btn-sm"
+        text={this.props.status === STARTED ? 'Importing...' : 'Import'}
+        disabled={!this.props.fileName || this.props.status === STARTED}
+        clickHandler={this.handleImportBtnClicked}
+      />
+    );
   }
 
   renderAddDataButton() {
@@ -303,7 +326,7 @@ class AddDataModal extends PureComponent {
           Add data To Collection {this.props.ns}
         </Modal.Header>
         <Modal.Body>
-          <AddDataOptions
+          <UploadModal
             delimiter={this.props.delimiter}
             setDelimiter={this.props.setDelimiter}
             fileType={this.props.fileType}
@@ -314,7 +337,7 @@ class AddDataModal extends PureComponent {
             setStopOnErrors={this.props.setStopOnErrors}
             ignoreBlanks={this.props.ignoreBlanks}
             setIgnoreBlanks={this.props.setIgnoreBlanks}
-            fileOpenDialog={fileOpenDialog}
+            fileOpenDialog={fileOpenDialog}  
             setAddDataRecordsCount={this.props.setAddDataRecordsCount}
             setFieldsPerRecordCount={this.props.setFieldsPerRecordCount}
           />
@@ -347,7 +370,6 @@ class AddDataModal extends PureComponent {
         </Modal.Body>
         <Modal.Footer>
           {this.renderCancelButton()}
-          {this.renderAddDataButton()}
           {this.renderDoneButton()}
         </Modal.Footer>
       </Modal>
@@ -391,6 +413,7 @@ const mapStateToProps = (state) => ({
 export default connect(
   mapStateToProps,
   {
+    startImport,
     startAddData,
     cancelAddData,
     selectImportFileType,

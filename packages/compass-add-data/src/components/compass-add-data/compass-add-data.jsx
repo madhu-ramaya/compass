@@ -9,7 +9,8 @@ import AnalysisCompleteMessage from '../analysis-complete-message';
 import ZeroGraphic from '../zero-graphic';
 import get from 'lodash.get';
 import classnames from 'classnames';
-
+import CustomDocumentList from '../../../../compass-crud/src/components/custom-document-list';
+import { StoreConnector } from 'hadron-react-components';
 import styles from './compass-add-data.module.less';
 import {
   ANALYSIS_STATE_INITIAL,
@@ -141,28 +142,40 @@ class AddData extends Component {
     });
   }
 
+  renderDocument(){
+    return(
+      <StoreConnector store={this.props.store}>
+      <CustomDocumentList
+        {...this.props.actions}
+        {...this.props}
+        pageLoadedListenable={this.props.store}
+        isExportable />
+    </StoreConnector>
+    );
+  }
+
   renderInitialScreen() {
-    return (
+    return ( 
       <div className={classnames(styles['schema-zero-state'])}>
-        <ZeroGraphic />
-        <ZeroState
-          header={HEADER}
-          subtext={SUBTEXT}>
-          <div className={classnames(styles['schema-zero-state-action'])}>
-            <div>
-              <TextButton
-                dataTestId="add-data-button"
-                className="btn btn-primary btn-lg"
-                text="Add Data"
-                clickHandler={this.onApplyClicked.bind(this)} 
-                />
-            </div>
+      <ZeroGraphic />
+      <ZeroState
+        header={HEADER}
+        subtext={SUBTEXT}>
+        <div className={classnames(styles['schema-zero-state-action'])}>
+          <div>
+            <TextButton
+              dataTestId="add-data-button"
+              className="btn btn-primary btn-lg"
+              text="Add Data"
+              clickHandler={this.onApplyClicked.bind(this)} 
+              />
           </div>
-          <a className={classnames(styles['schema-zero-state-link'])} onClick={this.onOpenLink.bind(this)}>
-          Learn more about adding test data in Compass
-          </a>
-        </ZeroState>
-      </div>
+        </div>
+        <a className={classnames(styles['schema-zero-state-link'])} onClick={this.onOpenLink.bind(this)}>
+        Learn more about adding test data in Compass
+        </a>
+      </ZeroState>
+    </div>
     );
   }
 
@@ -180,9 +193,12 @@ class AddData extends Component {
    * @returns {React.Component} Zero state or fields.
    */
   renderContent() {
+    console.log(this.props.analysisState)
+    console.log(this.props.AddData);
     if (this.props.analysisState === ANALYSIS_STATE_INITIAL) {
       return (
-        this.renderInitialScreen()
+        //this.renderInitialScreen()
+        this.renderDocument()
       );
     }
 
@@ -212,14 +228,14 @@ class AddData extends Component {
     return (
       <div className={classnames(styles.root)}>
         <div className="controls-container">
-          <this.queryBar
+          {/* <this.queryBar
             store={this.queryBarStore}
             actions={this.queryBarActions}
             buttonLabel="Analyze"
             resultId={this.props.resultId}
             onApply={this.onApplyClicked.bind(this)}
             onReset={this.onResetClicked.bind(this)}
-          />
+          /> */}
           {this.renderBanner()}
         </div>
         {this.renderContent()}
@@ -229,3 +245,6 @@ class AddData extends Component {
 }
 
 export default AddData;
+
+
+
